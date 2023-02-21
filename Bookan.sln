@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookanAPI", "BookanAPI\BookanAPI.csproj", "{075D499D-9126-45F1-8333-AE8C7D596628}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookanLibrary", "BookanLibrary\BookanLibrary.csproj", "{2E6CCD2E-A911-40FE-90C6-A86B2B3F6AB5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{075D499D-9126-45F1-8333-AE8C7D596628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{075D499D-9126-45F1-8333-AE8C7D596628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{075D499D-9126-45F1-8333-AE8C7D596628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{075D499D-9126-45F1-8333-AE8C7D596628}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E6CCD2E-A911-40FE-90C6-A86B2B3F6AB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E6CCD2E-A911-40FE-90C6-A86B2B3F6AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E6CCD2E-A911-40FE-90C6-A86B2B3F6AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E6CCD2E-A911-40FE-90C6-A86B2B3F6AB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38DF1904-4974-41BE-8535-6719E2804E92}
+	EndGlobalSection
+EndGlobal
