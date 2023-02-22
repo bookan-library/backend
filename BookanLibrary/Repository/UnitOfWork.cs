@@ -13,33 +13,14 @@ namespace BookanLibrary.Repository
 
         private readonly DataContext _context;
         private Dictionary<string, dynamic> _repositories;
+        private IUserRepository _userRepository;
 
-        public IUserRepository UserRepository { get; set; }
+
+        public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
 
         public UnitOfWork(DataContext context)
         {
             _context = context;
-            UserRepository = new UserRepository(_context);
-        }
-
-        public IBaseRepository<TEntity> GetRepository<TEntity>() where TEntity : class
-        {
-            string type = typeof(TEntity).Name;
-
-            if (_repositories == null)
-            {
-                _repositories = new Dictionary<string, dynamic>();
-                Type repositoryType = typeof(BaseRepository<>);
-                _repositories.Add(type, Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), _context));
-                return (IBaseRepository<TEntity>)_repositories[type];
-
-            }
-            else if (_repositories.ContainsKey(type))
-            {
-                return (IBaseRepository<TEntity>)_repositories[type];
-            }
-
-            return null;
         }
 
         public void Dispose()

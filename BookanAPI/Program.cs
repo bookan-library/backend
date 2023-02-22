@@ -1,4 +1,6 @@
 using BookanLibrary.Helpers;
+using BookanLibrary.Repository;
+using BookanLibrary.Repository.Core;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<DataContext>(
     o => o.UseNpgsql(builder.Configuration.GetConnectionString("BookanDb"))
     );
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
