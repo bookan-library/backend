@@ -11,7 +11,6 @@ namespace BookanLibrary.Repository.Core
         int Save();
         new void Dispose();
 
-        IBaseRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
         public IUserRepository UserRepository { get; }
     }
 }
