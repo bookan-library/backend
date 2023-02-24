@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookanLibrary.Core.Model
 {
-    public class Seller : User
+    public class Seller : ApplicationUser
     {
         public int SoldBooksNumber { get; set; }
         public Seller(string firstName, string lastName, string email, string password,
@@ -16,6 +16,6 @@ namespace BookanLibrary.Core.Model
             SoldBooksNumber = soldBooksNumber;
         }
 
-        public Seller() { }
+        public Seller() : base() { }
     }
 }

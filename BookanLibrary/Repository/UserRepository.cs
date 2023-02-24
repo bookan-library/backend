@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookanLibrary.Repository
 {
-    public class UserRepository : BaseRepository<User>, IUserRepository { 
+    public class UserRepository : BaseRepository<ApplicationUser>, IUserRepository { 
         public UserRepository(DataContext context) : base(context) { }
     }
 }
