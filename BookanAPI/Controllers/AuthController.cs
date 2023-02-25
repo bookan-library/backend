@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.IdentityModel.Tokens;
 using RestSharp;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Web;
 
@@ -20,11 +23,15 @@ namespace BookanAPI.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
+        private readonly ILookupNormalizer _normalizer;
 
-        public AuthController(UserManager<ApplicationUser> userManager, IEmailService emailService)
+        public AuthController(UserManager<ApplicationUser> userManager, IEmailService emailService, IConfiguration configuration, ILookupNormalizer normalizer)
         {
             _userManager = userManager;
             _emailService = emailService;
+            _configuration = configuration;
+            _normalizer = normalizer;
         }
 
         [HttpPost("register")]
@@ -40,27 +47,64 @@ namespace BookanAPI.Controllers
                     Email = registerBuyerDTO.Email,
                     FirstName = registerBuyerDTO.FirstName,
                     LastName = registerBuyerDTO.LastName,
-                    Password = registerBuyerDTO.Password,
+                    Password = BCrypt.Net.BCrypt.HashPassword(registerBuyerDTO.Password),
                     PhoneNumber = registerBuyerDTO.PhoneNumber,
                     Role = Role.BUYER,
-                    Address = registerBuyerDTO.Address
+                    Address = registerBuyerDTO.Address,
                 };
 
                 var result = await _userManager.CreateAsync(new_user, registerBuyerDTO.Password);
                 if (result.Succeeded)
                 {
-                    Console.WriteLine(new_user.Id);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(new_user);
-                    Console.WriteLine("Real code " + code);
                     code = Base64Encode(code);
                     await _emailService.SendVerificationMail(code, new_user.Email, new_user.Id);
-                    //var res = await _userManager.ConfirmEmailAsync(new_user, HttpUtility.UrlDecode(code));
-                    //Console.WriteLine("Testiramo hehe" + res);
-
+                    new_user.NormalizedEmail = _normalizer.NormalizeEmail(registerBuyerDTO.Email);
+                    var updateResult = await _userManager.UpdateAsync(new_user);
                 }
                 return Ok();
             }
             return BadRequest();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserDTO user) {
+
+            var foundUser = await _userManager.FindByNameAsync(user.Email);
+            if (foundUser != null && BCrypt.Net.BCrypt.Verify(user.Password, foundUser.Password))
+            {
+                var issuer = _configuration["JwtConfig:Issuer"];
+                var audience = _configuration["JwtConfig:Audience"];
+                var key = Encoding.ASCII.GetBytes
+                (_configuration["JwtConfig:Secret"]);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new[]
+                    {
+                        new Claim("Id", Guid.NewGuid().ToString()),
+                        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                        new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                        new Claim(JwtRegisteredClaimNames.Jti,
+                        Guid.NewGuid().ToString())
+                     }),
+                    Expires = DateTime.UtcNow.AddMinutes(60),
+                    Issuer = issuer,
+                    Audience = audience,
+                    SigningCredentials = new SigningCredentials
+                    (new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha512Signature)
+                };
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var jwtToken = tokenHandler.WriteToken(token);
+                var stringToken = tokenHandler.WriteToken(token);
+                return Ok(new AuthResult() {
+                    Token = stringToken, 
+                    Result = true,
+                    Errors = null 
+                });
+            }
+            return Unauthorized();
         }
 
         [HttpGet("verify")]

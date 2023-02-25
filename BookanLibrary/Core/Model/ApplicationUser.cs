@@ -20,7 +20,7 @@ namespace BookanLibrary.Core.Model
         public Address Address { get; set; }
 
         public ApplicationUser(string firstName, string lastName, string email, string password,
-            string phoneNumber, Role role, Address address) {
+            string phoneNumber, Role role, Address address){
             FirstName = firstName;
             LastName = lastName;
             Email = email;
