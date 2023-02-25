@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookanLibrary.Core.Model
 {
-    public class Manager : User
+    public class Manager : ApplicationUser
     {
         public string Expertise { get; set; }
         public Manager(string firstName, string lastName, string email, string password,
@@ -16,6 +16,6 @@ namespace BookanLibrary.Core.Model
             Expertise = expertise;  
         }
 
-        public Manager() { }
+        public Manager() : base() { }
     }
 }

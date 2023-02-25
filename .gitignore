@@ -1,3 +1,5 @@
+BookanAPI/appsettings.json
+BookanAPI/appsettings.Development.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,csharp,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,csharp,windows
@@ -57,6 +59,7 @@ nunit-*.xml
 [Dd]ebugPS/
 [Rr]eleasePS/
 dlldata.c
+BookanAPI/settings.json
 
 # Benchmark Results
 BenchmarkDotNet.Artifacts/

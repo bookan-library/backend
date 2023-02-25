@@ -1,4 +1,5 @@
 ﻿using BookanLibrary.Core.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,21 +10,20 @@ using System.Threading.Tasks;
 
 namespace BookanLibrary.Helpers
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.UseSerialColumns();
-
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Manager>().ToTable("Managers");
             modelBuilder.Entity<Seller>().ToTable("Sellers");
             modelBuilder.Entity<Buyer>().ToTable("Buyers");
-
+            
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Buyer> Buyers { get; set; }
         public DbSet<Seller> Sellers { get; set; }
