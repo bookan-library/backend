@@ -1,5 +1,6 @@
 ﻿using BookanLibrary.Core.Model;
 using BookanLibrary.Helpers;
+using BookanLibrary.Migrations;
 using BookanLibrary.Repository.Core;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,12 @@ namespace BookanLibrary.Repository
         }
 
         public async Task AddBuyer(Buyer buyer) {
-            Console.WriteLine("stiglo " + buyer.BoughtBooksNum);
             _context.Buyers.Add(buyer);
             _context.SaveChanges();
+        }
+
+        public async Task<Buyer> GetBuyer(int id) {
+            return _context.Set<Buyer>().Find(id);
         }
     }
 }

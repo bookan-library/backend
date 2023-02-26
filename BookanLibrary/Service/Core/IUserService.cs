@@ -11,5 +11,6 @@ namespace BookanLibrary.Service.Core
     public interface IUserService
     {
         Task AddBuyer(Buyer buyer);
+        Task<Buyer> GetBuyer(int id);
     }
 }

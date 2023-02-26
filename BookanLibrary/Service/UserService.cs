@@ -17,8 +17,11 @@ namespace BookanLibrary.Service
             _unitOfWork = unitOfWork;
         }
 
+        public async Task<Buyer> GetBuyer(int id) {
+            return await _unitOfWork.UserRepository.GetBuyer(id);
+        }
+
         public async Task AddBuyer(Buyer buyer) {
-            Console.WriteLine("stiglo 1 " + buyer.BoughtBooksNum);
             await _unitOfWork.UserRepository.AddBuyer(buyer);
         }
     }

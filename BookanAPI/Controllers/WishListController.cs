@@ -15,10 +15,13 @@ namespace BookanAPI.Controllers
         private readonly IWishListService _wishListService;
         private readonly IBookService _bookService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public WishListController(IWishListService wishListService, UserManager<ApplicationUser> userManager, IBookService bookService) {
+        private readonly IUserService _userService;
+        public WishListController(IWishListService wishListService, IUserService userService, 
+            IBookService bookService, UserManager<ApplicationUser> userManager) {
             _wishListService = wishListService;
-            _userManager = userManager;
             _bookService = bookService;
+            _userService = userService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -31,14 +34,16 @@ namespace BookanAPI.Controllers
             return Ok(wishes);
         }
 
-        //[HttpPost("/add")]
-        //[Authorize(Roles = "BUYER")]
-        //public async Task<IActionResult> Add([FromBody] WishDTO wishDTO) { 
-        //    ApplicationUser user = await _userManager.FindByNameAsync(wishDTO.UserEmail);
-        //    Book book = await _bookService.GetById(wishDTO.BookId);
-        //    await _wishListService.Add(new Wish(user, book));
-
-        //}
+        [HttpPost("/add")]
+        [Authorize(Roles = "BUYER")]
+        public async Task<IActionResult> Add([FromBody] WishDTO wishDTO)
+        {
+            ApplicationUser user = await _userManager.FindByNameAsync(wishDTO.UserEmail);
+            Buyer buyer = await _userService.GetBuyer(user.Id);
+            Book book = await _bookService.GetById(wishDTO.BookId);
+            await _wishListService.Add(new Wish(buyer, book));
+            return Ok();
+        }
 
     }
 }

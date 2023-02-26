@@ -64,8 +64,6 @@ namespace BookanAPI.Controllers
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(new_user);
                     code = Base64Encode(code);
                     await _emailService.SendVerificationMail(code, new_user.Email, new_user.Id);
-                    Buyer buyer = new Buyer(new_user.FirstName, new_user.LastName, new_user.Email,
-                        new_user.Password, new_user.PhoneNumber, new_user.Role, new_user.Address, 0);
                 }
                 return Ok();
             }
