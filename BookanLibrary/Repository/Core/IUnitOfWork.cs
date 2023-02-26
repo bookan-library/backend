@@ -12,5 +12,6 @@ namespace BookanLibrary.Repository.Core
         new void Dispose();
 
         public IUserRepository UserRepository { get; }
+        public IBookRepository BookRepository { get; }
     }
 }

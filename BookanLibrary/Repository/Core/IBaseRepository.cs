@@ -8,12 +8,12 @@ namespace BookanLibrary.Repository.Core
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {
-        TEntity Get(int id);
+        Task<TEntity> Get(int id);
 
-        IEnumerable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetAll();
 
-        void Add(TEntity entity);
+        Task Add(TEntity entity);
 
-        void Update(TEntity entity);
+        Task Update(TEntity entity);
     }
 }

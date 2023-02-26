@@ -4,6 +4,8 @@ using BookanLibrary.Core.Model;
 using BookanLibrary.Helpers;
 using BookanLibrary.Repository;
 using BookanLibrary.Repository.Core;
+using BookanLibrary.Service;
+using BookanLibrary.Service.Core;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -59,10 +61,12 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

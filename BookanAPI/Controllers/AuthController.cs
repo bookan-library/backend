@@ -84,7 +84,7 @@ namespace BookanAPI.Controllers
                         new Claim("Id", Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                         new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                        //new Claim("Role", foundUser.Role.ToString()),
+                        new Claim("Role", foundUser.Role.ToString()),
                         new Claim(JwtRegisteredClaimNames.Jti,
                         Guid.NewGuid().ToString())
                     }),
