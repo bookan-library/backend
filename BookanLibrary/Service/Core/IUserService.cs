@@ -1,15 +1,15 @@
 ﻿using BookanLibrary.Core.Model;
+using BookanLibrary.Repository.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookanLibrary.Repository.Core
+namespace BookanLibrary.Service.Core
 {
-    public interface IUserRepository : IBaseRepository<ApplicationUser>
+    public interface IUserService
     {
-        Task<ApplicationUser> GetByEmail(string email);
         Task AddBuyer(Buyer buyer);
     }
 }

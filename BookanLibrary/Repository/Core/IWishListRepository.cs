@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BookanLibrary.Repository.Core
 {
-    public interface IUserRepository : IBaseRepository<ApplicationUser>
+    public interface IWishListRepository : IBaseRepository<Wish>
     {
-        Task<ApplicationUser> GetByEmail(string email);
-        Task AddBuyer(Buyer buyer);
+        Task<IEnumerable<Wish>> GetAll(int pageNumber, int userId);
     }
 }
