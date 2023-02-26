@@ -8,7 +8,7 @@ namespace BookanLibrary.Core.Model.Enums
 {
     public enum Role
     {
-        BUYER = 0,
+        BUYER,
         MANAGER,
         SELLER
     }

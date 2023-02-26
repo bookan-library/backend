@@ -24,24 +24,26 @@ namespace BookanLibrary.Repository
             _context = context;
         }
 
-        public virtual TEntity Get(int id)
+        public async virtual Task<TEntity> Get(int id)
         {
             return _context.Set<TEntity>().Find(id);
         }
 
-        public virtual IEnumerable<TEntity> GetAll()
+        public async virtual Task<IEnumerable<TEntity>> GetAll(int pageNumber)
         {
             return _context.Set<TEntity>().Where(x => !(x as Entity).Deleted).ToList();
         }
 
-        public virtual void Add(TEntity entity)
+        public async virtual Task Add(TEntity entity)
         {
             _context.Set<TEntity>().Add(entity);
+            _context.SaveChanges();
         }
 
-        public virtual void Update(TEntity entity)
+        public async virtual Task Update(TEntity entity)
         {
             _context.Entry(entity).State = (entity as Entity).Id == 0 ? EntityState.Added : EntityState.Modified;
+            _context.SaveChanges();
         }
     }
 }

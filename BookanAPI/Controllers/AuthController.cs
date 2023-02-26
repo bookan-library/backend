@@ -85,8 +85,9 @@ namespace BookanAPI.Controllers
                         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                         new Claim(JwtRegisteredClaimNames.Email, user.Email),
                         new Claim(JwtRegisteredClaimNames.Jti,
-                        Guid.NewGuid().ToString())
-                     }),
+                        Guid.NewGuid().ToString()),
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType, foundUser.Role.ToString())
+                    }),
                     Expires = DateTime.UtcNow.AddMinutes(60),
                     Issuer = issuer,
                     Audience = audience,

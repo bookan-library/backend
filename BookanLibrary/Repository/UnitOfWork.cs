@@ -14,9 +14,12 @@ namespace BookanLibrary.Repository
         private readonly DataContext _context;
         private Dictionary<string, dynamic> _repositories;
         private IUserRepository _userRepository;
+        private IBookRepository _bookRepository;
 
 
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
+        public IBookRepository BookRepository => _bookRepository ??= new BookRepository(_context);
+
 
         public UnitOfWork(DataContext context)
         {
