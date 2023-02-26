@@ -9,6 +9,6 @@ namespace BookanLibrary.Repository.Core
 {
     public interface IBookRepository : IBaseRepository<Book>
     {
-        Task<IEnumerable<Book>> Search(string search);
+        Task<IEnumerable<Book>> Search(string search, int pageNumber);
     }
 }

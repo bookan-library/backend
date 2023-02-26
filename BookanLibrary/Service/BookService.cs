@@ -16,14 +16,9 @@ namespace BookanLibrary.Service
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Book>> GetAll(string? search)
+        public async Task<IEnumerable<Book>> GetAll(string? search, int pageNumber)
         {
-            IEnumerable<Book> books = new List<Book>();
-            if (search == null)
-                books = await _unitOfWork.BookRepository.GetAll();
-            else
-                books = await _unitOfWork.BookRepository.Search(search);
-            return books;
+            return search == null ? await _unitOfWork.BookRepository.GetAll(pageNumber) : await _unitOfWork.BookRepository.Search(search, pageNumber);
         }
 
         public async Task Add(Book book) {

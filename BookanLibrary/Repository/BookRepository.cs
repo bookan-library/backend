@@ -1,4 +1,5 @@
-﻿using BookanLibrary.Core.Model;
+﻿using BookanAPI.Extensions;
+using BookanLibrary.Core.Model;
 using BookanLibrary.Helpers;
 using BookanLibrary.Migrations;
 using BookanLibrary.Repository.Core;
@@ -19,23 +20,31 @@ namespace BookanLibrary.Repository
             _context = context;
         }
 
-        public override async Task<IEnumerable<Book>> GetAll()
+        public override async Task<IEnumerable<Book>> GetAll(int pageNumber)
         {
             return _context.Set<Book>()
-                .Where(x => !(x as Entity).Deleted)
+                .Where(x => !x.Deleted)
                 .Include(x => x.Author)
                 .Include(x => x.Publisher)
                 .Include(x => x.Category)
+                .Paginate(pageNumber, 10)
                 .ToList();
         }
-        public async Task<IEnumerable<Book>> Search(string search) {
+        public async Task<IEnumerable<Book>> Search(string search, int pageNumber) {
             return _context.Set<Book>()
-                .Where(x => !(x as Entity).Deleted && (x.Name.ToLower().Contains(search.ToLower())
+                .Where(x => !x.Deleted && (x.Name.ToLower().Contains(search.ToLower())
                         || (x.Author.FirstName + " " + x.Author.LastName).ToLower().Contains(search.ToLower())))
                 .Include(x => x.Author)
                 .Include(x => x.Publisher)
                 .Include(x => x.Category)
+                .Paginate(pageNumber, 10)
                 .ToList();
-        } 
+        }
+
     }
+
+
+
+
+
 }

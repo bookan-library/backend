@@ -14,11 +14,10 @@ namespace BookanLibrary.Core.Model
         public DateTime BirthDate { get; set; }
         public Author() { }
         public Author(string firstName, string lastName, string description, DateTime birthDate) {
-            FirstName= firstName;
-            LastName= lastName;
-            Description= description;
-            BirthDate= birthDate;
+            FirstName = firstName;
+            LastName = lastName;
+            Description = description;
+            BirthDate = birthDate;
         }
-
     }
 }

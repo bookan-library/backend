@@ -29,7 +29,7 @@ namespace BookanLibrary.Repository
             return _context.Set<TEntity>().Find(id);
         }
 
-        public async virtual Task<IEnumerable<TEntity>> GetAll()
+        public async virtual Task<IEnumerable<TEntity>> GetAll(int pageNumber)
         {
             return _context.Set<TEntity>().Where(x => !(x as Entity).Deleted).ToList();
         }

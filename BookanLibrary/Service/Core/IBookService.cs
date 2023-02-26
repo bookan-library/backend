@@ -9,7 +9,7 @@ namespace BookanLibrary.Service.Core
 {
     public interface IBookService
     {
-        Task<IEnumerable<Book>> GetAll(string? search);
+        Task<IEnumerable<Book>> GetAll(string? search, int pageNumber);
         Task Add(Book book);
         Task<Book> GetById(int id);
     }

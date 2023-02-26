@@ -10,7 +10,7 @@ namespace BookanLibrary.Repository.Core
     {
         Task<TEntity> Get(int id);
 
-        Task<IEnumerable<TEntity>> GetAll();
+        Task<IEnumerable<TEntity>> GetAll(int pageNumber);
 
         Task Add(TEntity entity);
 
