@@ -30,7 +30,7 @@ namespace BookanAPI.Controllers
             ApplicationUser user = await _userManager.FindByNameAsync(buyerEmail);
             if (user == null) return BadRequest();
             IEnumerable<Wish> wishes = new List<Wish>();
-            wishes = await _wishListService.Get(pageNumber, user.Id);
+            wishes = await _wishListService.Get(user.Id, pageNumber);
             return Ok(wishes);
         }
 
