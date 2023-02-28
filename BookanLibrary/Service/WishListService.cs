@@ -25,9 +25,15 @@ namespace BookanLibrary.Service
             return await _unitOfWork.WishListRepository.GetAll(pageNumber, userId);
         }
 
-        public Task Remove(Wish wish)
+        public async Task<Wish> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _unitOfWork.WishListRepository.Get(id);
+        }
+
+        public async Task Remove(Wish wish)
+        {
+            wish.Deleted = true;
+            await _unitOfWork.WishListRepository.Update(wish);
         }
     }
 }

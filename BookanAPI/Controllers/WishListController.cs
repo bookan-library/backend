@@ -45,5 +45,14 @@ namespace BookanAPI.Controllers
             return Ok();
         }
 
+        [HttpDelete]
+        [Authorize(Roles = "BUYER")]
+        public async Task<IActionResult> Remove([FromBody] WishDTO wishDTO)
+        {
+            Wish wish = await _wishListService.GetById(wishDTO.Id);
+            await _wishListService.Remove(wish);
+            return Ok();
+        }
+
     }
 }

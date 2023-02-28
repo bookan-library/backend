@@ -12,5 +12,6 @@ namespace BookanLibrary.Service.Core
         Task<IEnumerable<Wish>> Get(int userId, int pageNumber);
         Task Add(Wish wish);
         Task Remove(Wish wish);
+        Task<Wish> GetById(int id);
     }
 }
