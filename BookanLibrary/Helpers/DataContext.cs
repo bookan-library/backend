@@ -1,4 +1,5 @@
 ﻿using BookanLibrary.Core.Model;
+using BookanLibrary.Core.Model.Newsletter;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,5 +34,6 @@ namespace BookanLibrary.Helpers
         public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Wish> WishLists { get; set; }
+        public DbSet<Newsletter> Newsletters { get; set; }
 }
 }
