@@ -15,10 +15,13 @@ namespace BookanLibrary.Repository
         private Dictionary<string, dynamic> _repositories;
         private IUserRepository _userRepository;
         private IBookRepository _bookRepository;
+        private IWishListRepository _wishListRepository;
 
 
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
         public IBookRepository BookRepository => _bookRepository ??= new BookRepository(_context);
+        public IWishListRepository WishListRepository => _wishListRepository ??= new WishListRepository(_context);
+
 
 
         public UnitOfWork(DataContext context)

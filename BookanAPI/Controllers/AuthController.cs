@@ -3,6 +3,7 @@ using BookanAPI.DTO;
 using BookanAPI.EmailServices;
 using BookanLibrary.Core.Model;
 using BookanLibrary.Core.Model.Enums;
+using BookanLibrary.Service.Core;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -25,13 +26,16 @@ namespace BookanAPI.Controllers
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         private readonly ILookupNormalizer _normalizer;
+        private readonly IUserService _userService;
 
-        public AuthController(UserManager<ApplicationUser> userManager, IEmailService emailService, IConfiguration configuration, ILookupNormalizer normalizer)
+        public AuthController(UserManager<ApplicationUser> userManager, IEmailService emailService,
+            IConfiguration configuration, ILookupNormalizer normalizer, IUserService userService)
         {
             _userManager = userManager;
             _emailService = emailService;
             _configuration = configuration;
             _normalizer = normalizer;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -41,7 +45,7 @@ namespace BookanAPI.Controllers
                 var user_exist = await _userManager.FindByEmailAsync(registerBuyerDTO.Email);
                 if (user_exist != null) return BadRequest(new AuthResult { Result = false, Errors = new List<string>() { "Email already exists!" } });
 
-                var new_user = new ApplicationUser()
+                var new_user = new Buyer()
                 {
                     UserName = registerBuyerDTO.Email,
                     Email = registerBuyerDTO.Email,
@@ -51,6 +55,7 @@ namespace BookanAPI.Controllers
                     PhoneNumber = registerBuyerDTO.PhoneNumber,
                     Role = Role.BUYER,
                     Address = registerBuyerDTO.Address,
+                    BoughtBooksNum = 0
                 };
 
                 var result = await _userManager.CreateAsync(new_user, registerBuyerDTO.Password);
@@ -59,8 +64,6 @@ namespace BookanAPI.Controllers
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(new_user);
                     code = Base64Encode(code);
                     await _emailService.SendVerificationMail(code, new_user.Email, new_user.Id);
-                    new_user.NormalizedEmail = _normalizer.NormalizeEmail(registerBuyerDTO.Email);
-                    var updateResult = await _userManager.UpdateAsync(new_user);
                 }
                 return Ok();
             }

@@ -13,5 +13,6 @@ namespace BookanLibrary.Repository.Core
 
         public IUserRepository UserRepository { get; }
         public IBookRepository BookRepository { get; }
+        public IWishListRepository WishListRepository { get; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using BookanLibrary.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookanLibrary.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230226152800_WishListEntityAdded")]
+    partial class WishListEntityAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -336,19 +339,13 @@ namespace BookanLibrary.Migrations
                     b.ToTable("Publishers");
                 });
 
-            modelBuilder.Entity("BookanLibrary.Core.Model.Wish", b =>
+            modelBuilder.Entity("BookanLibrary.Core.Model.WishList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BuyerId")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
@@ -359,11 +356,17 @@ namespace BookanLibrary.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("bookId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("buyerId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
+                    b.HasIndex("bookId");
 
-                    b.HasIndex("BuyerId");
+                    b.HasIndex("buyerId");
 
                     b.ToTable("WishLists");
                 });
@@ -475,9 +478,6 @@ namespace BookanLibrary.Migrations
                 {
                     b.HasBaseType("BookanLibrary.Core.Model.ApplicationUser");
 
-                    b.Property<int>("BoughtBooksNum")
-                        .HasColumnType("integer");
-
                     b.ToTable("Buyers", (string)null);
                 });
 
@@ -551,23 +551,23 @@ namespace BookanLibrary.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("BookanLibrary.Core.Model.Wish", b =>
+            modelBuilder.Entity("BookanLibrary.Core.Model.WishList", b =>
                 {
-                    b.HasOne("BookanLibrary.Core.Model.Book", "Book")
+                    b.HasOne("BookanLibrary.Core.Model.Book", "book")
                         .WithMany()
-                        .HasForeignKey("BookId")
+                        .HasForeignKey("bookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BookanLibrary.Core.Model.Buyer", "Buyer")
+                    b.HasOne("BookanLibrary.Core.Model.Buyer", "buyer")
                         .WithMany()
-                        .HasForeignKey("BuyerId")
+                        .HasForeignKey("buyerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Book");
+                    b.Navigation("book");
 
-                    b.Navigation("Buyer");
+                    b.Navigation("buyer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
