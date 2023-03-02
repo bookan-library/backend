@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookanLibrary.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230301000943_NewsletterModelAdded")]
-    partial class NewsletterModelAdded
+    [Migration("20230302132010_NewsletterModelsAdded")]
+    partial class NewsletterModelsAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -316,6 +316,41 @@ namespace BookanLibrary.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.ToTable("Newsletters");
+                });
+
+            modelBuilder.Entity("BookanLibrary.Core.Model.Newsletter.NewsletterSubscriber", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
+
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
@@ -331,7 +366,7 @@ namespace BookanLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Newsletters");
+                    b.ToTable("NewsletterSubscribers");
                 });
 
             modelBuilder.Entity("BookanLibrary.Core.Model.Publisher", b =>
@@ -567,6 +602,17 @@ namespace BookanLibrary.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Publisher");
+                });
+
+            modelBuilder.Entity("BookanLibrary.Core.Model.Newsletter.Newsletter", b =>
+                {
+                    b.HasOne("BookanLibrary.Core.Model.Manager", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("BookanLibrary.Core.Model.Publisher", b =>

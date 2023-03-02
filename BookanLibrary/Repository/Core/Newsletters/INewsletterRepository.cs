@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookanLibrary.Service.Core
+namespace BookanLibrary.Repository.Core.Newsletters
 {
-    public interface INewsletterService
+    public interface INewsletterRepository : IBaseRepository<Newsletter>
     {
-        Task Subscribe(NewsletterSubscriber subscriber);
     }
 }

@@ -1,6 +1,10 @@
-﻿using BookanAPI.DTO;
+﻿using AutoMapper;
+using BookanAPI.DTO;
+using BookanLibrary.Core.Model.Newsletter;
 using BookanLibrary.Service.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.Runtime.CompilerServices;
 
 namespace BookanAPI.Controllers
 {
@@ -9,15 +13,18 @@ namespace BookanAPI.Controllers
     public class NewsletterController : ControllerBase
     {
         private readonly INewsletterService _newsletterService;
-        public NewsletterController(INewsletterService newsletterService)
+        private readonly IMapper _mapper;
+        public NewsletterController(INewsletterService newsletterService, IMapper mapper)
         {
             _newsletterService = newsletterService;
+            _mapper = mapper;
         }
 
         [HttpPost("subscribe")]
-        public async Task<IActionResult> SubscribeToNewsletter([FromBody] NewsletterDTO newsletterDTO)
+        public async Task<IActionResult> SubscribeToNewsletter([FromBody] NewsletterSubscriberDTO subscriberDTO)
         {
-            throw new NotImplementedException();
+            await _newsletterService.Subscribe(_mapper.Map<NewsletterSubscriber>(subscriberDTO));
+            return Ok();
         }
     }
 }

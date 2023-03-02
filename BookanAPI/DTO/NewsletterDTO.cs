@@ -1,7 +1,11 @@
-﻿namespace BookanAPI.DTO
+﻿using BookanLibrary.Core.Model;
+
+namespace BookanAPI.DTO
 {
     public class NewsletterDTO
     {
-        public string SubscriberEmail { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public int CreatorId { get; set; }
     }
 }
