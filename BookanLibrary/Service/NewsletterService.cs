@@ -32,5 +32,12 @@ namespace BookanLibrary.Service
         public async Task Subscribe(NewsletterSubscriber subscriber) {
             await _unitOfWork.NewsletterSubscriberRepository.Add(subscriber);
         }
+
+        public async Task Unsubscribe(NewsletterSubscriber subscriber)
+        {
+            subscriber = await _unitOfWork.NewsletterSubscriberRepository.GetByEmail(subscriber.SubscriberEmail);
+            subscriber.Deleted = true;
+            await _unitOfWork.NewsletterSubscriberRepository.Update(subscriber);
+        }
     }
 }

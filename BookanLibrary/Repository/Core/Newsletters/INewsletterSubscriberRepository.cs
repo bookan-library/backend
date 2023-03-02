@@ -9,5 +9,6 @@ namespace BookanLibrary.Repository.Core.Newsletters
 {
     public interface INewsletterSubscriberRepository : IBaseRepository<NewsletterSubscriber>
     {
+        Task<NewsletterSubscriber> GetByEmail(string email);
     }
 }

@@ -29,6 +29,13 @@ namespace BookanAPI.Controllers
             return Ok();
         }
 
+        [HttpDelete("unsubscribe")]
+        [Authorize(Roles = "BUYER")]
+        public async Task<IActionResult> UnsubscribeToNewsletter([FromBody] NewsletterSubscriberDTO subscriberDTO) {
+            await _newsletterService.Unsubscribe(_mapper.Map<NewsletterSubscriber>(subscriberDTO));
+            return Ok();
+        }
+
         [HttpPost("send")]
         [Authorize(Roles = "MANAGER")]
         public async Task<IActionResult> SendNewsletter([FromBody] NewsletterDTO newsletter) {

@@ -1,4 +1,5 @@
-﻿using BookanLibrary.Core.Model.Newsletter;
+﻿using BookanLibrary.Core.Model;
+using BookanLibrary.Core.Model.Newsletter;
 using BookanLibrary.Helpers;
 using BookanLibrary.Repository.Core.Newsletters;
 using System;
@@ -15,6 +16,10 @@ namespace BookanLibrary.Repository.Newsletters
         public NewsletterSubscriberRepository(DataContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<NewsletterSubscriber> GetByEmail(string email) {
+            return _context.Set<NewsletterSubscriber>().Where(x => !(x as Entity).Deleted && x.SubscriberEmail.Equals(email)).FirstOrDefault();
         }
     }
 }
