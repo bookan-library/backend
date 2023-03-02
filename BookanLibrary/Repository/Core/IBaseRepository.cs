@@ -9,11 +9,9 @@ namespace BookanLibrary.Repository.Core
     public interface IBaseRepository<TEntity> where TEntity : class
     {
         Task<TEntity> Get(int id);
-
+        Task<IEnumerable<TEntity>> GetAll();
         Task<IEnumerable<TEntity>> GetAll(int pageNumber);
-
         Task Add(TEntity entity);
-
         Task Update(TEntity entity);
     }
 }

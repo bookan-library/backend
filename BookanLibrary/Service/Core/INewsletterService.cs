@@ -10,5 +10,6 @@ namespace BookanLibrary.Service.Core
     public interface INewsletterService
     {
         Task Subscribe(NewsletterSubscriber subscriber);
+        Task SendNewsletter(Newsletter newsletter);
     }
 }

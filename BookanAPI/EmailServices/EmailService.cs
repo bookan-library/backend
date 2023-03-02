@@ -52,6 +52,10 @@ namespace BookanAPI.EmailServices
             }
         }
 
+        public async Task SendNewsletterEmail(string title, string content, string subscriberEmail) {
+            await SendEmail(content, title, subscriberEmail, content);
+        }
+
 
         private async Task SendEmail(string body, string subject, string receiver, string htmlContent) {
             EmailAddress from = new EmailAddress("sara14042000@gmail.com");
