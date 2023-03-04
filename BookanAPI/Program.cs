@@ -66,6 +66,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IWishListService, WishListService>();
 builder.Services.AddScoped<INewsletterService, NewsletterService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
