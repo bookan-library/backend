@@ -37,10 +37,10 @@ namespace BookanAPI.Controllers
         }
 
         [HttpPost("send")]
-        [Authorize(Roles = "MANAGER")]
+        //[Authorize(Roles = "MANAGER")]
         public async Task<IActionResult> SendNewsletter([FromBody] NewsletterDTO newsletter) {
             Newsletter n = _mapper.Map<Newsletter>(newsletter);
-            Console.WriteLine("n " + n);
+            Console.WriteLine("n " + n.Creator.Email);
             await _newsletterService.SendNewsletter(_mapper.Map<Newsletter>(newsletter));
             return Ok();
 

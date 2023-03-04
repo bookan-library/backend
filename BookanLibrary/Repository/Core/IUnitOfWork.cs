@@ -17,5 +17,6 @@ namespace BookanLibrary.Repository.Core
         public IWishListRepository WishListRepository { get; }
         public INewsletterRepository NewsLetterRepository { get; }
         public INewsletterSubscriberRepository NewsletterSubscriberRepository { get; }
+        public ICartRepository CartRepository { get; }
     }
 }

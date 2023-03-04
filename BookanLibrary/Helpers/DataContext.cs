@@ -36,5 +36,6 @@ namespace BookanLibrary.Helpers
         public DbSet<Wish> WishLists { get; set; }
         public DbSet<Newsletter> Newsletters { get; set; }
         public DbSet<NewsletterSubscriber> NewsletterSubscribers { get; set; }
+        public DbSet<CartItem> Carts { get; set; }
 }
 }
