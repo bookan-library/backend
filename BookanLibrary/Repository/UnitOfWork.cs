@@ -20,6 +20,7 @@ namespace BookanLibrary.Repository
         private IWishListRepository _wishListRepository;
         private INewsletterRepository _newsletterRepository;
         private INewsletterSubscriberRepository _newsletterSubscriberRepository;
+        private ICartRepository _cartRepository;
 
 
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_context);
@@ -27,6 +28,7 @@ namespace BookanLibrary.Repository
         public IWishListRepository WishListRepository => _wishListRepository ??= new WishListRepository(_context);
         public INewsletterRepository NewsLetterRepository => _newsletterRepository ??= new NewsletterRepository(_context);
         public INewsletterSubscriberRepository NewsletterSubscriberRepository => _newsletterSubscriberRepository ??= new NewsletterSubscriberRepository(_context);
+        public ICartRepository CartRepository => _cartRepository ??= new CartRepository(_context);
 
         public UnitOfWork(DataContext context)
         {

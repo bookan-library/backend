@@ -84,7 +84,7 @@ namespace BookanAPI.Controllers
                 {
                     Subject = new ClaimsIdentity(new[]
                     {
-                        new Claim("Id", Guid.NewGuid().ToString()),
+                        new Claim("Id", foundUser.Id.ToString()),
                         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                         new Claim(JwtRegisteredClaimNames.Email, user.Email),
                         new Claim(JwtRegisteredClaimNames.Jti,
