@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookanLibrary.Migrations
 {
     /// <inheritdoc />
-    public partial class CommentModelAdded : Migration
+    public partial class AddCommentModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,7 @@ namespace BookanLibrary.Migrations
                     BookId = table.Column<int>(type: "integer", nullable: false),
                     Nickname = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    Approved = table.Column<bool>(type: "boolean", nullable: false),
+                    Approved = table.Column<int>(type: "integer", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DateUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false)

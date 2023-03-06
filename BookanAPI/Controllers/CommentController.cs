@@ -21,11 +21,18 @@ namespace BookanAPI.Controllers
         }
 
         [HttpPost("add")]
-        [Authorize(Roles = "BUYER")]
+        //[Authorize(Roles = "BUYER")]
         public async Task<IActionResult> AddComment([FromBody] CommentDTO comment) {
             Buyer buyer = await _userService.GetBuyer(comment.BuyerId);
             Book book = await _bookService.GetById(comment.BookId);
             await _commentService.AddComment(new Comment(buyer, book, comment.Nickname, comment.Comment));
+            return Ok();
+        }
+
+        [HttpPatch("approve")]
+        [Authorize(Roles = "MANAGER")]
+        public async Task<IActionResult> ApproveComment([FromBody] ApproveCommentDTO commentDTO) {
+            await _commentService.Approve(commentDTO.Id, commentDTO.IsApproved);
             return Ok();
         }
     }

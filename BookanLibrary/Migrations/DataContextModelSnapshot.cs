@@ -348,8 +348,8 @@ namespace BookanLibrary.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Approved")
-                        .HasColumnType("boolean");
+                    b.Property<int>("Approved")
+                        .HasColumnType("integer");
 
                     b.Property<int>("BookId")
                         .HasColumnType("integer");

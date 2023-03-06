@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookanLibrary.Core.Model.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,9 @@ namespace BookanLibrary.Core.Model
         public Book Book { get; set; }
         public string Nickname { get; set; }
         public string Content { get; set; }
-        public bool Approved { get; set; }
+        public CommentStatus Approved { get; set; }
         public Comment() { }
-        public Comment(Buyer buyer, Book book, string nickname, string content, bool approved = false)
+        public Comment(Buyer buyer, Book book, string nickname, string content, CommentStatus approved = CommentStatus.PENDING)
         {
             Buyer = buyer;
             Book = book;

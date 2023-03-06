@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookanLibrary.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230304173155_CommentModelAdded")]
-    partial class CommentModelAdded
+    [Migration("20230306215628_AddCommentModel")]
+    partial class AddCommentModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -351,8 +351,8 @@ namespace BookanLibrary.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Approved")
-                        .HasColumnType("boolean");
+                    b.Property<int>("Approved")
+                        .HasColumnType("integer");
 
                     b.Property<int>("BookId")
                         .HasColumnType("integer");

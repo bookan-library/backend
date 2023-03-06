@@ -1,4 +1,5 @@
 ﻿using BookanLibrary.Core.Model;
+using BookanLibrary.Core.Model.Enums;
 using BookanLibrary.Repository.Core;
 using BookanLibrary.Service.Core;
 using System;
@@ -19,6 +20,16 @@ namespace BookanLibrary.Service
         public async Task AddComment(Comment comment)
         {
             await _unitOfWork.CommentRepostiory.Add(comment);
+        }
+
+        public async Task<Comment> GetById(int id) { 
+            return await _unitOfWork.CommentRepostiory.Get(id);
+        }
+
+        public async Task Approve(int commentId, CommentStatus isApproved) {
+            Comment comment = await GetById(commentId);
+            comment.Approved = isApproved;
+            await _unitOfWork.CommentRepostiory.Update(comment);
         }
     }
 }
