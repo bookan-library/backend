@@ -40,7 +40,6 @@ namespace BookanAPI.Controllers
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterBuyerDTO registerBuyerDTO) {
-
             if (ModelState.IsValid) {
                 var user_exist = await _userManager.FindByEmailAsync(registerBuyerDTO.Email);
                 if (user_exist != null) return BadRequest(new AuthResult { Result = false, Errors = new List<string>() { "Email already exists!" } });
