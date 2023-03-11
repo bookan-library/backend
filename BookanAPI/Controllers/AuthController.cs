@@ -113,12 +113,27 @@ namespace BookanAPI.Controllers
         [HttpGet("verify")]
         public async Task<IActionResult> VerifyEmail([FromQuery] string code, [FromQuery] string id) {
             ApplicationUser user = await _userManager.FindByIdAsync(id);
-            Console.WriteLine(user);
             string _code = Base64Decode(code);
-            Console.WriteLine(_code);
             var res = await _userManager.ConfirmEmailAsync(user, _code);
-            Console.WriteLine("res " + res);
             return Ok();
+        }
+
+        [HttpGet("user")]
+        public async Task<IActionResult> GetUser() {
+            var claimsIdentity = User.Identity as ClaimsIdentity;
+            var userEmail = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
+            ApplicationUser user = await _userManager.FindByNameAsync(userEmail);
+            UserDTO buyer = new UserDTO{
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = user.Password,
+                PhoneNumber = user.PhoneNumber,
+                Role  = user.Role,
+                Address = user.Address,
+                EmailConfirmed = user.EmailConfirmed
+            };
+            return Ok(buyer);
         }
 
         private string Base64Encode(string plainText)
