@@ -5,6 +5,7 @@ using BookanLibrary.Core.Model;
 using BookanLibrary.Core.Model.Enums;
 using BookanLibrary.Service.Core;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -69,6 +70,34 @@ namespace BookanAPI.Controllers
             return BadRequest();
         }
 
+        [HttpPost("register/seller")]
+        [Authorize(Roles = "MANAGER")]
+        public async Task<IActionResult> RegisterSeller([FromBody] RegisterBuyerDTO registerBuyerDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                var user_exist = await _userManager.FindByEmailAsync(registerBuyerDTO.Email);
+                if (user_exist != null) return BadRequest(new AuthResult { Result = false, Errors = new List<string>() { "Email already exists!" } });
+
+                var new_user = new Seller()
+                {
+                    UserName = registerBuyerDTO.Email,
+                    Email = registerBuyerDTO.Email,
+                    FirstName = registerBuyerDTO.FirstName,
+                    LastName = registerBuyerDTO.LastName,
+                    Password = BCrypt.Net.BCrypt.HashPassword(registerBuyerDTO.Password),
+                    PhoneNumber = registerBuyerDTO.PhoneNumber,
+                    Role = Role.SELLER,
+                    Address = registerBuyerDTO.Address,
+                    SoldBooksNumber = 0
+                };
+
+                await _userManager.CreateAsync(new_user, registerBuyerDTO.Password);
+                return Ok();
+            }
+            return BadRequest();
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDTO user) {
 
@@ -123,7 +152,7 @@ namespace BookanAPI.Controllers
             var claimsIdentity = User.Identity as ClaimsIdentity;
             var userEmail = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
             ApplicationUser user = await _userManager.FindByNameAsync(userEmail);
-            UserDTO buyer = new UserDTO{
+            UserDTO userDTO = new UserDTO{
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
@@ -133,7 +162,7 @@ namespace BookanAPI.Controllers
                 Address = user.Address,
                 EmailConfirmed = user.EmailConfirmed
             };
-            return Ok(buyer);
+            return Ok(userDTO);
         }
 
         private string Base64Encode(string plainText)
