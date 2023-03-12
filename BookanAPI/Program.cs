@@ -1,11 +1,13 @@
 using BookanAPI.Configurations;
 using BookanAPI.EmailServices;
+using BookanAPI.Services;
 using BookanLibrary.Core.Model;
 using BookanLibrary.Helpers;
 using BookanLibrary.Repository;
 using BookanLibrary.Repository.Core;
 using BookanLibrary.Service;
 using BookanLibrary.Service.Core;
+using BookanLibrary.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -68,8 +70,6 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-
-
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IBookService, BookService>();
@@ -78,6 +78,10 @@ builder.Services.AddScoped<IWishListService, WishListService>();
 builder.Services.AddScoped<INewsletterService, NewsletterService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
+builder.Services.AddScoped<IPublisherService, PublisherService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IStorageService, StorageService>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

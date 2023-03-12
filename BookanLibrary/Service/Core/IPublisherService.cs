@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace BookanLibrary.Service.Core
 {
-    public interface IBookService
+    public interface IPublisherService
     {
-        Task<IEnumerable<Book>> GetAll(string? search, int pageNumber);
-        Task Add(Book book, byte[] file, string extension);
-        Task<Book> GetById(int id);
+        Task<IEnumerable<Publisher>> GetAll();
+        Task<Publisher> GetById(int id);
     }
 }

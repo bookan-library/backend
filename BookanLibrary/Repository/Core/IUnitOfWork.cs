@@ -19,5 +19,8 @@ namespace BookanLibrary.Repository.Core
         public INewsletterSubscriberRepository NewsletterSubscriberRepository { get; }
         public ICartRepository CartRepository { get; }
         public ICommentRepository CommentRepostiory { get; }
+        public IAuthorRepository AuthorRepository { get; }
+        public IPublisherRepository PublisherRepository { get; }
+        public ICategoryRepository CategoryRepository { get; }
     }
 }

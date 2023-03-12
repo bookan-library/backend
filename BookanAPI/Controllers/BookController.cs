@@ -5,6 +5,7 @@ using BookanLibrary.Core.Model.Enums;
 using BookanLibrary.Service.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Xml.Linq;
 
 namespace BookanAPI.Controllers
 {
@@ -13,10 +14,17 @@ namespace BookanAPI.Controllers
     public class BookController : ControllerBase
     {
         private readonly IBookService _bookService;
+        private readonly IPublisherService _publisherService;
+        private readonly IAuthorService _authorService;
+        private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
-        public BookController(IBookService bookService, IMapper mapper) { 
+        public BookController(IBookService bookService, IMapper mapper, IPublisherService publisherService,
+            IAuthorService authorService, ICategoryService categoryService) { 
             _bookService = bookService;
             _mapper = mapper;
+            _authorService = authorService;
+            _categoryService = categoryService;
+            _publisherService = publisherService;
         }
 
         [HttpGet]
@@ -33,13 +41,55 @@ namespace BookanAPI.Controllers
             return Ok(book);
         }
 
+        //[HttpPost("add")]
+        //[Authorize(Roles = "SELLER")]
+        //public async Task<IActionResult> Add([FromBody] AddBookDTO bookDTO) {
+        //    Book book = new Book {
+        //        Name = bookDTO.Name, 
+        //        Description = bookDTO.Description,
+        //        PageNumber = bookDTO.PageNumber,  
+        //        PublishingYear = bookDTO.PublishingYear,
+        //        Author = await _authorService.GetById(bookDTO.AuthorId),  
+        //        Publisher = await _publisherService.GetById(bookDTO.PublisherId),  
+        //        Category = await _categoryService.GetById(bookDTO.CategoryId),  
+        //        PicUrl = bookDTO.PicUrl
+        //    };
+        //    await _bookService.Add(book);
+        //    return Ok();
+        //}
+
         [HttpPost("add")]
-        [Authorize(Roles = "BUYER")]
-        public async Task<IActionResult> Add([FromBody] BookDTO book) {
-            await _bookService.Add(_mapper.Map<Book>(book));
+        [Authorize(Roles = "SELLER")]
+        public async Task<IActionResult> Add([FromForm]AddBookDTO bookDTO) {
+            Book book = new Book
+            {
+                Name = bookDTO.Name,
+                Description = bookDTO.Description,
+                PageNumber = bookDTO.PageNumber,
+                PublishingYear = bookDTO.PublishingYear,
+                Author = await _authorService.GetById(bookDTO.AuthorId),
+                Publisher = await _publisherService.GetById(bookDTO.PublisherId),
+                Category = await _categoryService.GetById(bookDTO.CategoryId),
+            };
+            var extension = bookDTO.File.FileName.Split('.').Last();
+            var byteFile = await ConvertToByteArrayAsync(bookDTO.File);
+            await _bookService.Add(book, byteFile, extension);
             return Ok();
         }
 
+        private async Task<byte[]> ConvertToByteArrayAsync(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return null;
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
 
     }
 }

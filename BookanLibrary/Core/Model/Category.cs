@@ -9,7 +9,7 @@ namespace BookanLibrary.Core.Model
     public class Category : Entity
     {
         public string Name { get; set; }
-        public int CategoryParentId { get; set; }
+        public int? CategoryParentId { get; set; }
 
         public Category() { }
         public Category(string name, int categoryParentId)

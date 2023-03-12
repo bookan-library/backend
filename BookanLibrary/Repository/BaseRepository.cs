@@ -46,7 +46,7 @@ namespace BookanLibrary.Repository
             _context.SaveChanges();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async virtual Task<IEnumerable<TEntity>> GetAll()
         {
             return _context.Set<TEntity>().Where(x => !(x as Entity).Deleted).ToList();
         }
