@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookanAPI.DTO;
+using BookanLibrary.Core.Model;
 using BookanLibrary.Service.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,13 @@ namespace BookanAPI.Controllers
         [Authorize(Roles = "SELLER")]
         public async Task<IActionResult> GetAll() {
             return Ok(_mapper.Map<IEnumerable<PublisherDTO>>(await _publisherService.GetAll()));
+        }
+
+        [HttpPost("add")]
+        [Authorize(Roles = "SELLER")]
+        public async Task<IActionResult> Add(PublisherDTO publisherDTO) {
+            await _publisherService.Add(_mapper.Map<Publisher>(publisherDTO));
+            return Ok();
         }
     }
 }

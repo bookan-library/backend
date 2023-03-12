@@ -15,6 +15,12 @@ namespace BookanLibrary.Service
         public PublisherService(IUnitOfWork unitOfWork) {
             _unitOfWork = unitOfWork;
         }
+
+        public async Task Add(Publisher publisher)
+        {
+            await _unitOfWork.PublisherRepository.Add(publisher);
+        }
+
         public async Task<IEnumerable<Publisher>> GetAll()
         {
             return await _unitOfWork.PublisherRepository.GetAll();

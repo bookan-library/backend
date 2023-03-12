@@ -11,5 +11,6 @@ namespace BookanLibrary.Service.Core
     {
         Task<IEnumerable<Publisher>> GetAll();
         Task<Publisher> GetById(int id);
+        Task Add(Publisher publisher);
     }
 }
