@@ -22,7 +22,7 @@ namespace BookanAPI.Controllers
         }
 
         [HttpPost("subscribe")]
-        [Authorize(Roles = "BUYER")]
+        //[Authorize(Roles = "BUYER")]
         public async Task<IActionResult> SubscribeToNewsletter([FromBody] NewsletterSubscriberDTO subscriberDTO)
         {
             await _newsletterService.Subscribe(_mapper.Map<NewsletterSubscriber>(subscriberDTO));
