@@ -30,6 +30,18 @@ namespace BookanLibrary.Repository
                 .Paginate(pageNumber, 10)
                 .ToList();
         }
+
+        public async Task<IEnumerable<Book>> GetByCategory(string category, int pageNumber)
+        {
+            return _context.Set<Book>()
+                .Where(x => !x.Deleted && x.Category.Name.ToLower().Equals(category.ToLower()))
+                .Include(x => x.Author)
+                .Include(x => x.Publisher)
+                .Include(x => x.Category)
+                .Paginate(pageNumber, 10)
+                .ToList();
+        }
+
         public async Task<IEnumerable<Book>> Search(string search, int pageNumber) {
             return _context.Set<Book>()
                 .Where(x => !x.Deleted && (x.Name.ToLower().Contains(search.ToLower())
