@@ -36,5 +36,9 @@ namespace BookanLibrary.Service
             Book book = await _unitOfWork.BookRepository.Get(id);
             return book;
         }
+
+        public async Task<IEnumerable<Book>> GetByCategory(string category, int pageNumber) {
+            return await _unitOfWork.BookRepository.GetByCategory(category, pageNumber);
+        }
     }
 }
