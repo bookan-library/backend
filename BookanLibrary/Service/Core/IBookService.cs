@@ -13,5 +13,6 @@ namespace BookanLibrary.Service.Core
         Task Add(Book book, byte[] file, string extension);
         Task<Book> GetById(int id);
         Task<IEnumerable<Book>> GetByCategory(string category, int pageNumber);
+        Task<int> GetCount();
     }
 }

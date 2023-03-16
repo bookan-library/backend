@@ -31,6 +31,15 @@ namespace BookanLibrary.Repository
                 .ToList();
         }
 
+        public override async Task<Book> Get(int id) {
+            return _context.Set<Book>()
+                 .Where(x => x.Id == id)
+                 .Include(x => x.Author)
+                 .Include(x => x.Publisher)
+                 .Include(x => x.Category)
+                 .FirstOrDefault();
+        }
+
         public async Task<IEnumerable<Book>> GetByCategory(string category, int pageNumber)
         {
             return _context.Set<Book>()
@@ -38,7 +47,7 @@ namespace BookanLibrary.Repository
                 .Include(x => x.Author)
                 .Include(x => x.Publisher)
                 .Include(x => x.Category)
-                .Paginate(pageNumber, 10)
+                .Paginate(pageNumber, 1)
                 .ToList();
         }
 

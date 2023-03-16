@@ -47,6 +47,12 @@ namespace BookanAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<BookDTO>>(await _bookService.GetByCategory(category, pageNumber)));
         }
 
+        [HttpGet("count")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetCount() {
+            return Ok(await _bookService.GetCount());
+        }
+
         //[HttpPost("add")]
         //[Authorize(Roles = "SELLER")]
         //public async Task<IActionResult> Add([FromBody] AddBookDTO bookDTO) {
