@@ -13,5 +13,6 @@ namespace BookanLibrary.Service.Core
         Task AddComment(Comment comment);
         Task<Comment> GetById(int id);
         Task Approve(int commentId, CommentStatus isApproved);
+        Task<IEnumerable<Comment>> GetComments(int bookId);
     }
 }

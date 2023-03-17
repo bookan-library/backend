@@ -12,5 +12,6 @@ namespace BookanLibrary.Repository.Core
         Task<ApplicationUser> GetByEmail(string email);
         Task AddBuyer(Buyer buyer);
         Task<Buyer> GetBuyer(int id);
+        Task<ApplicationUser> GetUser(int id);
     }
 }

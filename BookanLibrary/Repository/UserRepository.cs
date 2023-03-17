@@ -2,6 +2,7 @@
 using BookanLibrary.Helpers;
 using BookanLibrary.Migrations;
 using BookanLibrary.Repository.Core;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,14 @@ namespace BookanLibrary.Repository
 
         public async Task<Buyer> GetBuyer(int id) {
             return _context.Set<Buyer>().Find(id);
+        }
+
+        public async Task<ApplicationUser> GetUser(int id)
+        {
+            return _context.Set<ApplicationUser>()
+                .Where(x => x.Id == id)
+                .Include(x => x.Address)
+                .FirstOrDefault();
         }
     }
 }

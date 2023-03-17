@@ -1,5 +1,7 @@
 ﻿using BookanLibrary.Core.Model;
+using BookanLibrary.Core.Model.Enums;
 using BookanLibrary.Helpers;
+using BookanLibrary.Migrations;
 using BookanLibrary.Repository.Core;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,12 @@ namespace BookanLibrary.Repository
         public CommentRepository(DataContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<IEnumerable<Comment>> GetCommentsForBook(int bookId) {
+            return _context.Set<Comment>()
+                .Where(x => !(x as Entity).Deleted && x.Book.Id == bookId && x.Approved == CommentStatus.APPROVED)
+                .ToList();
         }
     }
 }

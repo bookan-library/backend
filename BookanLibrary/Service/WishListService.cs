@@ -20,6 +20,13 @@ namespace BookanLibrary.Service
             await _unitOfWork.WishListRepository.Add(wish);
         }
 
+        public async Task<bool> CheckIfBookInWishlist(int userId, int bookId)
+        {
+            Wish wish = await _unitOfWork.WishListRepository.CheckIfBookInWishlist(userId, bookId);
+            if (wish == null) return false;
+            return true;
+        }
+
         public async Task<IEnumerable<Wish>> Get(int userId, int pageNumber)
         {
             return await _unitOfWork.WishListRepository.GetAll(pageNumber, userId);
@@ -34,6 +41,17 @@ namespace BookanLibrary.Service
         {
             wish.Deleted = true;
             await _unitOfWork.WishListRepository.Update(wish);
+        }
+
+        public async Task Remove(int userId, int bookId)
+        {
+            Wish wish = await _unitOfWork.WishListRepository.GetWishToRemove(userId, bookId);
+            wish.Deleted = true;
+            await _unitOfWork.WishListRepository.Update(wish);
+        }
+
+        public async Task<int> GetCount(int userId) {
+            return await _unitOfWork.WishListRepository.GetAll(userId);
         }
     }
 }

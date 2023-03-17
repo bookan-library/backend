@@ -152,12 +152,13 @@ namespace BookanAPI.Controllers
             var claimsIdentity = User.Identity as ClaimsIdentity;
             var userEmail = claimsIdentity.FindFirst(ClaimTypes.Email)?.Value;
             ApplicationUser user = await _userManager.FindByNameAsync(userEmail);
+            user = await _userService.GetUser(user.Id);
+            Console.WriteLine(user.Address.Id);
             UserDTO userDTO = new UserDTO{
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-                Password = user.Password,
                 PhoneNumber = user.PhoneNumber,
                 Role  = user.Role,
                 Address = user.Address,

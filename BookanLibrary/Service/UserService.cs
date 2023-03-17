@@ -21,6 +21,10 @@ namespace BookanLibrary.Service
             return await _unitOfWork.UserRepository.GetBuyer(id);
         }
 
+        public async Task<ApplicationUser> GetUser(int id) {
+            return await _unitOfWork.UserRepository.GetUser(id);
+        }
+
         public async Task AddBuyer(Buyer buyer) {
             await _unitOfWork.UserRepository.AddBuyer(buyer);
         }
