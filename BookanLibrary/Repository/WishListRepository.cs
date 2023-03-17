@@ -22,11 +22,35 @@ namespace BookanLibrary.Repository
         public async Task<IEnumerable<Wish>> GetAll(int pageNumber, int userId) {
             return _context.Set<Wish>()
                .Where(x => !x.Deleted && x.Buyer.Id == userId)
-               .Include(x => x.Book)
                .Include(x => x.Buyer)
+               .Include(x => x.Book)
+               .ThenInclude(x => x.Category)
+               .Include(x => x.Book)
+               .ThenInclude(x => x.Author)
                .Paginate(pageNumber, 10)
                .ToList();
         }
 
+        public async Task<int> GetAll(int userId)
+        {
+            return _context.Set<Wish>()
+               .Where(x => !x.Deleted && x.Buyer.Id == userId)
+               .Include(x => x.Book)
+               .Include(x => x.Buyer)
+               .Count();
+        }
+
+        public async Task<Wish> CheckIfBookInWishlist(int userId, int bookId) {
+            return await _context.Set<Wish>()
+                   .Where(x => !x.Deleted && x.Buyer.Id == userId && x.Book.Id == bookId)
+                   .FirstOrDefaultAsync();
+        }
+
+        public async Task<Wish> GetWishToRemove(int userId, int bookId)
+        {
+            return await _context.Set<Wish>()
+                   .Where(x => !x.Deleted && x.Buyer.Id == userId && x.Book.Id == bookId)
+                   .FirstOrDefaultAsync();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BookanAPI.DTO;
+﻿using AutoMapper;
+using BookanAPI.DTO;
 using BookanLibrary.Core.Model;
 using BookanLibrary.Service;
 using BookanLibrary.Service.Core;
@@ -14,14 +15,16 @@ namespace BookanAPI.Controllers
         private readonly ICommentService _commentService;
         private readonly IBookService _bookService;
         private readonly IUserService _userService;
-        public CommentController(ICommentService commentService, IBookService bookService, IUserService userService) {
+        private readonly IMapper _mapper;
+        public CommentController(ICommentService commentService, IBookService bookService, IUserService userService, IMapper mapper) {
             _commentService = commentService;
             _bookService = bookService;
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpPost("add")]
-        //[Authorize(Roles = "BUYER")]
+        [Authorize(Roles = "BUYER")]
         public async Task<IActionResult> AddComment([FromBody] CommentDTO comment) {
             Buyer buyer = await _userService.GetBuyer(comment.BuyerId);
             Book book = await _bookService.GetById(comment.BookId);
@@ -34,6 +37,12 @@ namespace BookanAPI.Controllers
         public async Task<IActionResult> ApproveComment([FromBody] ApproveCommentDTO commentDTO) {
             await _commentService.Approve(commentDTO.Id, commentDTO.IsApproved);
             return Ok();
+        }
+
+        [HttpGet("{bookId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetComments([FromRoute] int bookId) {
+            return Ok(await _commentService.GetComments(bookId));
         }
     }
 }

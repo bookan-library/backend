@@ -12,5 +12,6 @@ namespace BookanLibrary.Service.Core
     {
         Task AddBuyer(Buyer buyer);
         Task<Buyer> GetBuyer(int id);
+        Task<ApplicationUser> GetUser(int id);
     }
 }

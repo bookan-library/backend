@@ -10,5 +10,8 @@ namespace BookanLibrary.Repository.Core
     public interface IWishListRepository : IBaseRepository<Wish>
     {
         Task<IEnumerable<Wish>> GetAll(int pageNumber, int userId);
+        Task<int> GetAll(int userId);
+        Task<Wish> CheckIfBookInWishlist(int userId, int bookId);
+        Task<Wish> GetWishToRemove(int userId, int bookId);
     }
 }

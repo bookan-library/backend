@@ -31,5 +31,11 @@ namespace BookanLibrary.Service
             comment.Approved = isApproved;
             await _unitOfWork.CommentRepostiory.Update(comment);
         }
+
+        public async Task<IEnumerable<Comment>> GetComments(int bookId)
+        {
+            IEnumerable<Comment> comments = await _unitOfWork.CommentRepostiory.GetCommentsForBook(bookId);
+            return comments;
+        }
     }
 }
