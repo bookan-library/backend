@@ -22,7 +22,13 @@ namespace BookanLibrary.Service
         }
 
         public async Task AddToCart(CartItem cartItem) {
-            await _unitOfWork.CartRepository.Add(cartItem);
+            CartItem item = await _unitOfWork.CartRepository.CheckIfUserHasBookInCart(cartItem);
+            if (item == null) { 
+                await _unitOfWork.CartRepository.Add(cartItem);
+                return;
+            }
+            item.Quantity += cartItem.Quantity;
+            await _unitOfWork.CartRepository.Update(item);
         }
 
         public async Task RemoveFromCart(int id)

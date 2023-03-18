@@ -26,7 +26,7 @@ namespace BookanAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "BUYER")]
+        //[Authorize(Roles = "BUYER")]
         public async Task<IActionResult> GetUserCart([FromRoute] int id) {
             //map
             IEnumerable<CartItemDTO> cartItems = _mapper.Map<IEnumerable<CartItemDTO>>(await _cartService.GetUserCart(id));
@@ -48,8 +48,6 @@ namespace BookanAPI.Controllers
             await _cartService.RemoveFromCart(cartItem.Id);
             return Ok();
         }
-
-
 
     }
 }
