@@ -10,5 +10,7 @@ namespace BookanLibrary.Repository.Core
     public interface ICommentRepository : IBaseRepository<Comment>
     {
         Task<IEnumerable<Comment>> GetCommentsForBook(int bookId);
+        Task<IEnumerable<Comment>> GetPendingComments();
+
     }
 }
