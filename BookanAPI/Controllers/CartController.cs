@@ -26,7 +26,7 @@ namespace BookanAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "BUYER")]
+        //[Authorize(Roles = "BUYER")]
         public async Task<IActionResult> GetUserCart([FromRoute] int id) {
             //map
             IEnumerable<CartItemDTO> cartItems = _mapper.Map<IEnumerable<CartItemDTO>>(await _cartService.GetUserCart(id));
@@ -38,18 +38,24 @@ namespace BookanAPI.Controllers
         public async Task<IActionResult> AddToCart([FromBody] NewCartItemDTO newCartItem) {
             Book book = await _bookService.GetById(newCartItem.BookId);
             Buyer buyer = await _userService.GetBuyer(newCartItem.BuyerId);
-            await _cartService.AddToCart(new CartItem(buyer, book, newCartItem.Quantity));
-            return Ok();
+            return Ok(await _cartService.AddToCart(new CartItem(buyer, book, newCartItem.Quantity)));
         }
 
-        [HttpDelete("remove")]
+        [HttpPost("update")]
         [Authorize(Roles = "BUYER")]
-        public async Task<IActionResult> RemoveFromCart([FromBody] NewCartItemDTO cartItem) {
-            await _cartService.RemoveFromCart(cartItem.Id);
+        public async Task<IActionResult> UpdateInCart([FromBody] NewCartItemDTO cartItem) {
+            Book book = await _bookService.GetById(cartItem.BookId);
+            Buyer buyer = await _userService.GetBuyer(cartItem.BuyerId);
+            await _cartService.UpdateInCart(new CartItem(buyer, book, cartItem.Quantity));
             return Ok();
         }
 
-
+        [HttpDelete("{cartItemId}/remove")]
+        [Authorize(Roles = "BUYER")]
+        public async Task<IActionResult> RemoveFromCart([FromRoute] int cartItemId) {
+            await _cartService.RemoveFromCart(cartItemId);
+            return Ok();
+        }
 
     }
 }

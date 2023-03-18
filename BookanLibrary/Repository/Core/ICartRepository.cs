@@ -10,5 +10,6 @@ namespace BookanLibrary.Repository.Core
     public interface ICartRepository : IBaseRepository<CartItem>
     {
         Task<IEnumerable<CartItem>> GetUserCart(int userId);
+        Task<CartItem> CheckIfUserHasBookInCart(CartItem cartItem);
     }
 }

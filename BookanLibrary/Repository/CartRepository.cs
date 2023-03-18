@@ -23,7 +23,17 @@ namespace BookanLibrary.Repository
             return _context.Set<CartItem>()
                 .Where(x => !x.Deleted && x.Buyer.Id == userId)
                 .Include(x => x.Book)
+                .ThenInclude(x => x.Category)
+                .Include(x => x.Book)
+                .ThenInclude(x => x.Author)
                 .ToList();
+        }
+
+        public async Task<CartItem> CheckIfUserHasBookInCart(CartItem cartItem) {
+            return _context.Set<CartItem>()
+             .Where(x => !x.Deleted && x.Buyer.Id == cartItem.Buyer.Id && x.Book.Id == cartItem.Book.Id)
+             .Include(x => x.Book)
+             .FirstOrDefault();
         }
     }
 }

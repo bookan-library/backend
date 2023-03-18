@@ -10,7 +10,8 @@ namespace BookanLibrary.Service.Core
     public interface ICartService
     {
         Task<IEnumerable<CartItem>> GetUserCart(int id);
-        Task AddToCart(CartItem cartItem);
+        Task<CartItem> AddToCart(CartItem cartItem);
         Task RemoveFromCart(int id);
+        Task UpdateInCart(CartItem cartItem);
     }
 }
