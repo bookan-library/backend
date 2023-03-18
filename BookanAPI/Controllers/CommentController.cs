@@ -39,10 +39,20 @@ namespace BookanAPI.Controllers
             return Ok();
         }
 
+        [HttpGet("pending")]
+        //[Authorize(Roles = "MANAGER")]
+        public async Task<IActionResult> GetPendingComments()
+        {
+            IEnumerable<FullCommentDTO> pendingComments = _mapper.Map<IEnumerable<FullCommentDTO>>(await _commentService.GetPendingComments());
+            return Ok(pendingComments);
+        }
+
         [HttpGet("{bookId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetComments([FromRoute] int bookId) {
             return Ok(await _commentService.GetComments(bookId));
         }
+
+  
     }
 }

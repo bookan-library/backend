@@ -5,6 +5,7 @@ using BookanLibrary.Service.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,6 +36,12 @@ namespace BookanLibrary.Service
         public async Task<IEnumerable<Comment>> GetComments(int bookId)
         {
             IEnumerable<Comment> comments = await _unitOfWork.CommentRepostiory.GetCommentsForBook(bookId);
+            return comments;
+        }
+
+        public async  Task<IEnumerable<Comment>> GetPendingComments()
+        {
+            IEnumerable<Comment> comments = await _unitOfWork.CommentRepostiory.GetPendingComments();
             return comments;
         }
     }
