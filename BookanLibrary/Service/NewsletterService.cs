@@ -27,7 +27,7 @@ namespace BookanLibrary.Service
 
         public async Task SendNewsletter(Newsletter newsletter, byte[] file, string extension)
         {
-            string filename = $"{newsletter.Title}-{DateTime.Now.ToString("ddMMyyyyhhmmss")}.{extension}";
+            string filename = $"{newsletter.Title.Split(" ")[0]}-{DateTime.Now.ToString("ddMMyyyyhhmmss")}.{extension}";
             string picUrl = await _storageService.UploadFile(file, filename);
             newsletter.PicUrl = picUrl;
             await _unitOfWork.NewsLetterRepository.Add(newsletter);

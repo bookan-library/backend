@@ -41,7 +41,7 @@ namespace BookanAPI.Controllers
         }
 
         [HttpPost("send")]
-        //[Authorize(Roles = "MANAGER")]
+        [Authorize(Roles = "MANAGER")]
         public async Task<IActionResult> SendNewsletter([FromForm] NewsletterDTO newsletterDTO) {
             Newsletter newsletter = new Newsletter {
                 Title = newsletterDTO.Title,

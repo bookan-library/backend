@@ -54,7 +54,6 @@ namespace BookanAPI.EmailServices
         }
 
         public async Task SendNewsletterEmail(Newsletter newsletter, string subscriberEmail) {
-            Console.WriteLine("link " + newsletter.PicUrl);
             string htmlContent = newsletter.Content + " <a href=\"http://localhost:3000\"><br><img src=\"" + newsletter.PicUrl + "\"/></a>";
             await SendEmail(newsletter.Content, newsletter.Title, subscriberEmail, htmlContent);
         }
