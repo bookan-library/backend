@@ -11,6 +11,6 @@ namespace BookanLibrary.Service.Core
     {
         Task Subscribe(NewsletterSubscriber subscriber);
         Task Unsubscribe(NewsletterSubscriber subscriber);
-        Task SendNewsletter(Newsletter newsletter);
+        Task SendNewsletter(Newsletter newsletter, byte[] byteFile, string extension);
     }
 }

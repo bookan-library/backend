@@ -1,7 +1,9 @@
 ﻿using BookanAPI.EmailServices;
+using BookanLibrary.Core.Model;
 using BookanLibrary.Core.Model.Newsletter;
 using BookanLibrary.Repository.Core;
 using BookanLibrary.Service.Core;
+using BookanLibrary.Shared;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -15,17 +17,23 @@ namespace BookanLibrary.Service
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailService _emailService;
-        public NewsletterService(IUnitOfWork unitOfWork, IEmailService emailService) {
+        private readonly IStorageService _storageService;
+        public NewsletterService(IUnitOfWork unitOfWork, IEmailService emailService, IStorageService storageService)
+        {
             _unitOfWork = unitOfWork;
             _emailService = emailService;
+            _storageService = storageService;
         }
 
-        public async Task SendNewsletter(Newsletter newsletter)
+        public async Task SendNewsletter(Newsletter newsletter, byte[] file, string extension)
         {
+            string filename = $"{newsletter.Title.Split(" ")[0]}-{DateTime.Now.ToString("ddMMyyyyhhmmss")}.{extension}";
+            string picUrl = await _storageService.UploadFile(file, filename);
+            newsletter.PicUrl = picUrl;
             await _unitOfWork.NewsLetterRepository.Add(newsletter);
             IEnumerable<NewsletterSubscriber> subscribers = await _unitOfWork.NewsletterSubscriberRepository.GetAll();
             foreach (NewsletterSubscriber subscriber in subscribers) {
-                await _emailService.SendNewsletterEmail(newsletter.Title, newsletter.Content, subscriber.SubscriberEmail);
+                await _emailService.SendNewsletterEmail(newsletter, subscriber.SubscriberEmail);
             }
         }
 

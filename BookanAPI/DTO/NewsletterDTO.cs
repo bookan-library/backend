@@ -7,5 +7,6 @@ namespace BookanAPI.DTO
         public string Title { get; set; }
         public string Content { get; set; }
         public int CreatorId { get; set; }
+        public IFormFile File { get; set; }
     }
 }

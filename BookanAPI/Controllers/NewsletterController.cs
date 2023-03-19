@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using BookanAPI.DTO;
+using BookanAPI.Helpers;
+using BookanLibrary.Core.Model;
 using BookanLibrary.Core.Model.Newsletter;
 using BookanLibrary.Service.Core;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +16,13 @@ namespace BookanAPI.Controllers
     public class NewsletterController : ControllerBase
     {
         private readonly INewsletterService _newsletterService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        public NewsletterController(INewsletterService newsletterService, IMapper mapper)
+        public NewsletterController(INewsletterService newsletterService, IMapper mapper, IUserService userService)
         {
             _newsletterService = newsletterService;
             _mapper = mapper;
+            _userService = userService;
         }
 
         [HttpPost("subscribe")]
@@ -37,13 +41,18 @@ namespace BookanAPI.Controllers
         }
 
         [HttpPost("send")]
-        //[Authorize(Roles = "MANAGER")]
-        public async Task<IActionResult> SendNewsletter([FromBody] NewsletterDTO newsletter) {
-            Newsletter n = _mapper.Map<Newsletter>(newsletter);
-            Console.WriteLine("n " + n.Creator.Email);
-            await _newsletterService.SendNewsletter(_mapper.Map<Newsletter>(newsletter));
+        [Authorize(Roles = "MANAGER")]
+        public async Task<IActionResult> SendNewsletter([FromForm] NewsletterDTO newsletterDTO) {
+            Newsletter newsletter = new Newsletter {
+                Title = newsletterDTO.Title,
+                Content = newsletterDTO.Content,
+                Creator = (Manager)await _userService.GetUser(newsletterDTO.CreatorId),
+            };
+            var extension = newsletterDTO.File.FileName.Split('.').Last();
+            var byteFile = await Helper.ConvertToByteArrayAsync(newsletterDTO.File);
+            await _newsletterService.SendNewsletter(newsletter, byteFile, extension);
             return Ok();
-
         }
+   
     }
 }
