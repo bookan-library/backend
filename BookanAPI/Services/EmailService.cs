@@ -1,5 +1,6 @@
 ﻿using BookanAPI.Configurations;
 using BookanLibrary.Core.Model;
+using BookanLibrary.Core.Model.Newsletter;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using SendGrid;
@@ -52,8 +53,10 @@ namespace BookanAPI.EmailServices
             }
         }
 
-        public async Task SendNewsletterEmail(string title, string content, string subscriberEmail) {
-            await SendEmail(content, title, subscriberEmail, content);
+        public async Task SendNewsletterEmail(Newsletter newsletter, string subscriberEmail) {
+            Console.WriteLine("link " + newsletter.PicUrl);
+            string htmlContent = newsletter.Content + " <a href=\"http://localhost:3000\"><br><img src=\"" + newsletter.PicUrl + "\"/></a>";
+            await SendEmail(newsletter.Content, newsletter.Title, subscriberEmail, htmlContent);
         }
 
 

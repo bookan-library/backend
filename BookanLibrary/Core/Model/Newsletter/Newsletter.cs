@@ -12,12 +12,15 @@ namespace BookanLibrary.Core.Model.Newsletter
         public string Title { get; set; }
         public string Content { get; set; }
         public Manager Creator { get; set; }
+        public string PicUrl { get; set; }
 
         public Newsletter() { }
-        public Newsletter(string title, string content, Manager creator) {
+        public Newsletter(string title, string content, Manager creator, string picUrl)
+        {
             Title = title;
             Content = content;
             Creator = creator;
+            PicUrl = picUrl;
         }
     }
 }

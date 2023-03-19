@@ -1,10 +1,11 @@
 ﻿using BookanLibrary.Core.Model;
+using BookanLibrary.Core.Model.Newsletter;
 
 namespace BookanAPI.EmailServices
 {
     public interface IEmailService
     {
         Task SendVerificationMail(string code, string receiver, int id);
-        Task SendNewsletterEmail(string title, string content, string subscriberEmail);
+        Task SendNewsletterEmail(Newsletter newsletter, string subscriberEmail);
     }
 }
