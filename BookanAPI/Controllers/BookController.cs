@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookanAPI.DTO;
+using BookanAPI.Helpers;
 using BookanLibrary.Core.Model;
 using BookanLibrary.Core.Model.Enums;
 using BookanLibrary.Service.Core;
@@ -29,8 +30,16 @@ namespace BookanAPI.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAll([FromQuery] string? search, [FromQuery] int pageNumber) {
-            var books = await _bookService.GetAll(search, pageNumber);
+        public async Task<IActionResult> GetAll([FromQuery] QueryParamsDTO parametersDTO) {
+            QueryParams parameters = new QueryParams
+            {
+                Publishers = parametersDTO.Publishers,
+                MinPrice = parametersDTO.MinPrice,
+                MaxPrice = parametersDTO.MaxPrice,
+                Search = parametersDTO.Search,
+                PageNumber = parametersDTO.PageNumber,
+            };
+            var books = await _bookService.GetAll(parameters);
             return Ok(books);
         }
 
@@ -43,14 +52,31 @@ namespace BookanAPI.Controllers
 
         [HttpGet("categories/{category}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetByCategory([FromRoute] string category, [FromQuery] int pageNumber) {
-            return Ok(_mapper.Map<IEnumerable<BookDTO>>(await _bookService.GetByCategory(category, pageNumber)));
+        public async Task<IActionResult> GetByCategory([FromRoute] string category, [FromQuery] QueryParamsDTO parametersDTO) {
+            QueryParams parameters = new QueryParams
+            {
+                Publishers = parametersDTO.Publishers ?? new string[] {""},
+                MinPrice = parametersDTO.MinPrice,
+                MaxPrice = parametersDTO.MaxPrice,
+                Search = parametersDTO.Search,
+                PageNumber = parametersDTO.PageNumber,
+            };
+            return Ok(_mapper.Map<IEnumerable<BookDTO>>(await _bookService.GetByCategory(category, parameters)));
         }
 
-        [HttpGet("count")]
+        [HttpGet("{category}/count")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetCount() {
-            return Ok(await _bookService.GetCount());
+        public async Task<IActionResult> GetCount([FromRoute] string category, [FromQuery] QueryParamsDTO parametersDTO) {
+
+            QueryParams parameters = new QueryParams
+            {
+                Publishers = parametersDTO.Publishers,
+                MinPrice = parametersDTO.MinPrice,
+                MaxPrice = parametersDTO.MaxPrice,
+                Search = parametersDTO.Search,
+                PageNumber = parametersDTO.PageNumber,
+            };
+            return Ok(await _bookService.GetCount(category, parameters));
         }
 
         //[HttpPost("add")]
@@ -82,25 +108,12 @@ namespace BookanAPI.Controllers
                 Author = await _authorService.GetById(bookDTO.AuthorId),
                 Publisher = await _publisherService.GetById(bookDTO.PublisherId),
                 Category = await _categoryService.GetById(bookDTO.CategoryId),
+                Price = bookDTO.Price
             };
             var extension = bookDTO.File.FileName.Split('.').Last();
-            var byteFile = await ConvertToByteArrayAsync(bookDTO.File);
+            var byteFile = await Helper.ConvertToByteArrayAsync(bookDTO.File);
             await _bookService.Add(book, byteFile, extension);
             return Ok();
-        }
-
-        private async Task<byte[]> ConvertToByteArrayAsync(IFormFile file)
-        {
-            if (file == null || file.Length == 0)
-            {
-                return null;
-            }
-
-            using (var memoryStream = new MemoryStream())
-            {
-                await file.CopyToAsync(memoryStream);
-                return memoryStream.ToArray();
-            }
         }
 
     }

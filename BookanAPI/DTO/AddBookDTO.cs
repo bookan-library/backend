@@ -10,5 +10,6 @@
         public int PublisherId { get; set; }
         public int CategoryId { get; set; }
         public IFormFile File { get; set; }
+        public float Price { get; set; }
     }
 }
