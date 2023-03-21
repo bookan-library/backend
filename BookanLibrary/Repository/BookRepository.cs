@@ -1,5 +1,6 @@
 ﻿using BookanAPI.Extensions;
 using BookanLibrary.Core.Model;
+using BookanLibrary.Extensions;
 using BookanLibrary.Helpers;
 using BookanLibrary.Migrations;
 using BookanLibrary.Repository.Core;
@@ -20,14 +21,16 @@ namespace BookanLibrary.Repository
             _context = context;
         }
 
-        public override async Task<IEnumerable<Book>> GetAll(int pageNumber)
+        public async Task<IEnumerable<Book>> GetAll(string category, QueryParams parameters)
         {
             return _context.Set<Book>()
-                .Where(x => !x.Deleted)
+                .Where(x => !x.Deleted && x.Category.Name.ToLower().Equals(category.ToLower()))
                 .Include(x => x.Author)
                 .Include(x => x.Publisher)
                 .Include(x => x.Category)
-                .Paginate(pageNumber, 10)
+                .FilterByPrice(parameters)
+                .FilterByPublisher(parameters)
+                //.Paginate(parameters.PageNumber, 10)
                 .ToList();
         }
 
@@ -40,25 +43,29 @@ namespace BookanLibrary.Repository
                  .FirstOrDefault();
         }
 
-        public async Task<IEnumerable<Book>> GetByCategory(string category, int pageNumber)
+        public async Task<IEnumerable<Book>> GetByCategory(string category, QueryParams parameters)
         {
             return _context.Set<Book>()
                 .Where(x => !x.Deleted && x.Category.Name.ToLower().Equals(category.ToLower()))
                 .Include(x => x.Author)
                 .Include(x => x.Publisher)
                 .Include(x => x.Category)
-                .Paginate(pageNumber, 1)
+                .FilterByPrice(parameters)
+                .FilterByPublisher(parameters)
+                .Paginate(parameters.PageNumber, 10)
                 .ToList();
         }
 
-        public async Task<IEnumerable<Book>> Search(string search, int pageNumber) {
+        public async Task<IEnumerable<Book>> Search(QueryParams parameters) {
             return _context.Set<Book>()
-                .Where(x => !x.Deleted && (x.Name.ToLower().Contains(search.ToLower())
-                        || (x.Author.FirstName + " " + x.Author.LastName).ToLower().Contains(search.ToLower())))
+                .Where(x => !x.Deleted && (x.Name.ToLower().Contains(parameters.Search.ToLower())
+                        || (x.Author.FirstName + " " + x.Author.LastName).ToLower().Contains(parameters.Search.ToLower())))
                 .Include(x => x.Author)
                 .Include(x => x.Publisher)
                 .Include(x => x.Category)
-                .Paginate(pageNumber, 10)
+                .FilterByPrice(parameters)
+                .FilterByPublisher(parameters)
+                .Paginate(parameters.PageNumber, 10)
                 .ToList();
         }
 

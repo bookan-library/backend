@@ -20,9 +20,9 @@ namespace BookanLibrary.Service
             _storageService = storageService;
         }
 
-        public async Task<IEnumerable<Book>> GetAll(string? search, int pageNumber)
+        public async Task<IEnumerable<Book>> GetAll(QueryParams parameters)
         {
-            return search == null ? await _unitOfWork.BookRepository.GetAll(pageNumber) : await _unitOfWork.BookRepository.Search(search, pageNumber);
+            return parameters.Search == null ? await _unitOfWork.BookRepository.GetAll("", parameters) : await _unitOfWork.BookRepository.Search(parameters);
         }
 
         public async Task Add(Book book, byte[] file, string extension) {
@@ -37,13 +37,16 @@ namespace BookanLibrary.Service
             return book;
         }
 
-        public async Task<IEnumerable<Book>> GetByCategory(string category, int pageNumber) {
-            return await _unitOfWork.BookRepository.GetByCategory(category, pageNumber);
-        }
+        public async Task<IEnumerable<Book>> GetByCategory(string category, QueryParams parameters) {
+            Console.WriteLine(parameters);
+            Console.WriteLine(parameters.Publishers);
 
-        public async Task<int> GetCount()
+            return await _unitOfWork.BookRepository.GetByCategory(category, parameters);
+        }
+        
+        public async Task<int> GetCount(string category, QueryParams? parameters)
         {
-            List<Book> books = (List<Book>)await _unitOfWork.BookRepository.GetAll();
+            List<Book> books = (List<Book>)await _unitOfWork.BookRepository.GetAll(category, parameters);
             return books.Count;
         }
     }

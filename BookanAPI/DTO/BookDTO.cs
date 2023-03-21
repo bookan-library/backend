@@ -13,5 +13,6 @@ namespace BookanAPI.DTO
         public PublisherDTO Publisher { get; set; }
         public CategoryDTO Category { get; set; }
         public string PicUrl { get; set; }
+        public double Price { get; set; }
     }
 }

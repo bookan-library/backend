@@ -19,7 +19,7 @@ namespace BookanAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "SELLER")]
+        //[Authorize(Roles = "SELLER")]
         public async Task<IActionResult> GetAll() {
             return Ok(_mapper.Map<IEnumerable<PublisherDTO>>(await _publisherService.GetAll()));
         }

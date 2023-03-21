@@ -9,7 +9,8 @@ namespace BookanLibrary.Repository.Core
 {
     public interface IBookRepository : IBaseRepository<Book>
     {
-        Task<IEnumerable<Book>> Search(string search, int pageNumber);
-        Task<IEnumerable<Book>> GetByCategory(string category, int pageNumber);
+        Task<IEnumerable<Book>> Search(QueryParams parameters);
+        Task<IEnumerable<Book>> GetByCategory(string category, QueryParams parameters);
+        Task<IEnumerable<Book>> GetAll(string category, QueryParams parameters);
     }
 }
